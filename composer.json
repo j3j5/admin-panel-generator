@@ -16,8 +16,8 @@
         "illuminate/html": "5.*"
     },
     "autoload": {
-        "psr-0": {
-            "VivifyIdeas\\AdminPanelGenerator": "src/"
+        "psr-4": {
+            "VivifyIdeas\\AdminPanelGenerator\\": "src/"
         }
     }
 }
