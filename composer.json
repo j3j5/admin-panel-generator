@@ -1,5 +1,6 @@
 {
     "name": "vivify-ideas/admin-panel-generator",
+    "version": "0.0.9"
     "type": "library",
     "description": "Generate admin panel interface based on configuration.",
     "keywords": ["admin","laravel","admin-panel","backoffice"],
