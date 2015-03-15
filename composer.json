@@ -1,0 +1,24 @@
+{
+    "name": "vivify-ideas/admin-panel-generator",
+    "type": "library",
+    "description": "Generate admin panel interface based on configuration.",
+    "keywords": ["admin","laravel","admin-panel","backoffice"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "VivifyIdeas",
+            "email": "dev@vivifyideas.com",
+            "homepage": "http://vivifyideas.com"
+        }
+    ],
+    "require": {
+        "illuminate/html": "5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "VivifyIdeas\\AdminPanelGenerator\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
+
