@@ -4,6 +4,7 @@
     "type": "library",
     "description": "Generate admin panel interface based on configuration.",
     "keywords": ["admin","laravel","admin-panel","backoffice"],
+    "homepage": "https://github.com/Vivify-Ideas/admin-panel-generator",
     "license": "MIT",
     "authors": [
         {
@@ -13,6 +14,7 @@
         }
     ],
     "require": {
+        "php": ">=5.3.0",
         "illuminate/html": "5.*"
     },
     "autoload": {
