@@ -121,10 +121,10 @@ For each "List view" you can setup filters. Filters are used so you can easy fil
 ]
 ```
 
-First you define for which table you want to setup filters. For each filter you can setup 3 params: `label`, `type`, `compare` (optional).
+First you define for which table you want to setup filters. For each filter you can setup 3 params:
 
 - `label` [required] Label for certain column
-- `type` [required] [text|password|email|url|textarea|number|checkbox|radio] Type of the field
+- `type` [required] [ _text | password | email | url | textarea | number | checkbox | radio_ ] Type of the field
 - `compare` [optional] If you dont setup this param, then `=` will be used.
 
 ### forms
@@ -165,7 +165,7 @@ Example:
 
 ### validationRules
 
-Here you can setup validation rules (Laravel validation rules) for each table. It will be called when admin user want to create or edit some entity. Example:
+Here you can setup validation rules ([Laravel validation rules](http://laravel.com/docs/5.0/validation#available-validation-rules)) for each table. It will be called when admin user want to create or edit some entity. Example:
 
 ```php
 'validationRules' => [
