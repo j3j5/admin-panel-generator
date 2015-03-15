@@ -2,8 +2,6 @@
 
 use Illuminate\Support\ServiceProvider;
 
-// require __DIR__.'/../../vendor/autoload.php';
-
 class AdminPanelGeneratorProvider extends ServiceProvider {
 
 	const PACKAGE_NAME = 'vivifyideas/admin-panel-generator';
