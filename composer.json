@@ -16,10 +16,9 @@
         "illuminate/html": "5.*"
     },
     "autoload": {
-        "psr-4": {
-            "VivifyIdeas\\AdminPanelGenerator\\": "src/"
+        "psr-0": {
+            "VivifyIdeas\\AdminPanelGenerator": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
 
