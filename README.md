@@ -2,6 +2,19 @@
 
 Generate admin panel interface based on configuration.
 
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [prefix](#prefix)
+  - [authMiddleware](#authMiddleware)
+  - [tables](#tables)
+  - [rowsPerPage](#rowsPerPage)
+  - [columns](#columns)
+  - [filters](#filters)
+  - [forms](#forms)
+  - [validationRules](#validationRules)
+- [Screenshots](#screenshots)
+- [Contributing](#contributing)
+
 ## Installation
 
 First you need to install this package through Composer. Edit your project's `composer.json` file to require `vivify-ideas/admin-panel-generator` package.
