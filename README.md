@@ -1,6 +1,6 @@
 # Laravel 5 Admin Panel Generator
 
-Generate admin panel interface based on configuration.
+Generate admin panel interface based on configuration for your Laravel 5 applications.
 
 - [Installation](#installation)
 - [Configuration](#configuration)
