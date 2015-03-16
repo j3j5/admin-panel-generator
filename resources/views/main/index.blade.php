@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      <h2>{{ ucfirst(str_plural($tableName)) }} <a class="btn btn-primary pull-right" href="/{{ packageConfig('prefix') }}/{{ $tableName }}/create">Create new</a></h2>
+      <h2>{{ ucwords(str_replace('_', ' ', str_plural($tableName))) }} <a class="btn btn-primary pull-right" href="/{{ packageConfig('prefix') }}/{{ $tableName }}/create">Create new</a></h2>
 
       @if ($filters)
         <div class="panel panel-default">

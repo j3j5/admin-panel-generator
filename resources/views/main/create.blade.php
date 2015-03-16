@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <h2>New {{ ucfirst(str_singular($tableName)) }}</h2>
+      <h2>New {{ ucwords(str_replace('_', ' ', str_singular($tableName))) }}</h2>
 
       <form method="POST" action="/{{ packageConfig('prefix') }}/{{ $tableName }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">

@@ -34,7 +34,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           @foreach(packageConfig('tables') as $table)
-            <li><a href="/{{ packageConfig('prefix') }}/{{ $table }}">{{ ucfirst($table) }}</a></li>
+            <li><a href="/{{ packageConfig('prefix') }}/{{ $table }}">{{ ucwords(str_replace('_', ' ', $table)) }}</a></li>
           @endforeach
         </ul>
 
