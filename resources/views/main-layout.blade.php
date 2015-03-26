@@ -38,14 +38,21 @@
           @endforeach
         </ul>
 
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="/auth/logout">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
+        @if (packageConfig('additionalLinks'))
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                {{ Auth::user()->name }}
+                  <span class="caret"></span>
+              </a>
+                <ul class="dropdown-menu" role="menu">
+                  @foreach(packageConfig('additionalLinks') as $label => $link)
+                    <li><a href="{{ action($link) }}">{{ $label }}</a></li>
+                  @endforeach
+                </ul>
+            </li>
+          </ul>
+        @endif
       </div>
     </div>
   </nav>

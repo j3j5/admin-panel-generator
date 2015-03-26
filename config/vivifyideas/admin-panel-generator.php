@@ -9,6 +9,8 @@ return [
 
     'rowsPerPage' => 15,
 
+    'additionalLinks' => [],
+
     'columns' => [],
 
     'filters' => [],
