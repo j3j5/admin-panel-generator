@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller {
 
-
     public function index($tableName, Request $request)
     {
         $filters = $request->except('page', 'direction', 'column');
@@ -69,7 +68,8 @@ class MainController extends Controller {
             'tableName' => $tableName,
             'form' => $form,
             'belongsTo' => $this->getBelongsToColumns($form),
-            'hasMany' => $this->getHasManyColumns($form)
+            'hasMany' => $this->getHasManyColumns($form),
+			'belongsToMany' => $this->getBelongsToManyColumns($form)
         ]);
     }
 
@@ -108,9 +108,6 @@ class MainController extends Controller {
         if (@$form['hasMany']) {
             foreach ($form['hasMany'] as $table => $options) {
                 $hasMany[$table] = \DB::table($table)->orderBy($options['foreignLabel'], 'asc')->lists($options['foreignLabel'], 'id');
-                if (@$options['nullable']) {
-                    $hasMany[$table] = ['' => 'None'] + $hasMany[$table];
-                }
             }
         }
 
@@ -130,6 +127,31 @@ class MainController extends Controller {
         return $selectedHasMany;
     }
 
+	private function getBelongsToManyColumns($form)
+	{
+        $belongsToMany = null;
+
+        if (@$form['belongsToMany']) {
+            foreach ($form['belongsToMany'] as $table => $options) {
+                $belongsToMany[$table] = \DB::table($table)->orderBy($options['index'], 'asc')->lists($options['index'], 'id');
+            }
+        }
+
+        return $belongsToMany;
+	}
+
+	private function getSelectedBelongsToManyColumns($form, $id) {
+        $selectedBelongsToMany = null;
+
+        if (@$form['belongsToMany']) {
+            foreach ($form['belongsToMany'] as $table => $options) {
+                $selectedBelongsToMany[$table] = \DB::table($options['table'])->where($options['column'], $id)->lists($options['foreignLabel'], 'id');
+            }
+        }
+
+        return $selectedBelongsToMany;
+	}
+
     public function edit($tableName, $id)
     {
         $form = $this->getForm($tableName);
@@ -140,7 +162,9 @@ class MainController extends Controller {
             'form' => $form,
             'belongsTo' => $this->getBelongsToColumns($form),
             'hasMany' => $this->getHasManyColumns($form),
-            'selectedHasMany' => $this->getSelectedHasManyColumns($form, $id)
+            'selectedHasMany' => $this->getSelectedHasManyColumns($form, $id),
+            'belongsToMany' => $this->getBelongsToManyColumns($form),
+			'selectedBelongsToMany' => $this->getSelectedBelongsToManyColumns($form, $id)
         ]);
     }
 
@@ -172,6 +196,13 @@ class MainController extends Controller {
             unset($data['hasMany']);
         }
 
+		$belongsToMany = null;
+
+        if (@$data['belongsToMany']) {
+            $belongsToMany = $data['belongsToMany'];
+            unset($data['belongsToMany']);
+        }
+
         \DB::table($tableName)->where('id', $id)->update($data);
 
         $form = $this->getForm($tableName);
@@ -183,6 +214,19 @@ class MainController extends Controller {
                 $ids = $hasMany[$table];
                 if ($ids) {
                     \DB::table($table)->whereIn('id', $ids)->update([ $options['column'] => $id ]);
+                }
+            }
+        }
+
+        if (isset($form['belongsToMany'])) {
+            foreach ($form['belongsToMany'] as $table => $options) {
+                \DB::table($options['table'])->where($options['column'], $id)->delete();
+
+                $ids = $belongsToMany[$table];
+                if ($ids) {
+            		foreach ($ids as $pivotId) {
+						\DB::table($options['table'])->insert([$options['column'] => $id, $options['foreignLabel'] => $pivotId]);
+					}
                 }
             }
         }
@@ -208,6 +252,13 @@ class MainController extends Controller {
             unset($data['hasMany']);
         }
 
+		$belongsToMany = null;
+
+        if (@$data['belongsToMany']) {
+            $belongsToMany = $data['belongsToMany'];
+            unset($data['belongsToMany']);
+        }
+
         $id = \DB::table($tableName)->insertGetId($data);
 
         if ($hasMany) {
@@ -215,6 +266,15 @@ class MainController extends Controller {
             foreach ($hasMany as $table => $ids) {
                 \DB::table($table)->whereIn('id', $ids)->update([ $form['hasMany'][$table]['column'] => $id ]);
             }
+        }
+
+        if ($belongsToMany) {
+			$form = $this->getForm($tableName);
+            foreach ($belongsToMany as $table => $ids) {
+				foreach ($ids as $pivotId) {
+					\DB::table($form['belongsToMany'][$table]['table'])->insert([$form['belongsToMany'][$table]['column'] => $id, $form['belongsToMany'][$table]['foreignLabel'] => $pivotId]);
+				}
+			}
         }
 
         return redirect(packageConfig('prefix') . '/' . $tableName);
