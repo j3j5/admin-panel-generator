@@ -169,15 +169,15 @@ Example:
                 'foreignLabel' => 'title'
             ]
         ],
-		'belongsToMany' => [
-			'tags' => [
-				'label' => 'Tags',
-				'table' => 'article_tag',
-				'column' => 'tag_id',
-				'foreignLabel' => 'article_id',
-				'index' => 'id'
-			]
-		]
+        'belongsToMany' => [
+            'tags' => [
+                'label' => 'Tags',
+                'table' => 'article_tag',
+                'column' => 'article_id',
+                'foreignLabel' => 'tag_id',
+                'index' => 'id'
+            ]
+        ]
     ]
 ]
 ```

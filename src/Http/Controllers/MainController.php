@@ -69,7 +69,7 @@ class MainController extends Controller {
             'form' => $form,
             'belongsTo' => $this->getBelongsToColumns($form),
             'hasMany' => $this->getHasManyColumns($form),
-			'belongsToMany' => $this->getBelongsToManyColumns($form)
+            'belongsToMany' => $this->getBelongsToManyColumns($form)
         ]);
     }
 
@@ -127,8 +127,8 @@ class MainController extends Controller {
         return $selectedHasMany;
     }
 
-	private function getBelongsToManyColumns($form)
-	{
+    private function getBelongsToManyColumns($form)
+    {
         $belongsToMany = null;
 
         if (@$form['belongsToMany']) {
@@ -138,9 +138,10 @@ class MainController extends Controller {
         }
 
         return $belongsToMany;
-	}
+    }
 
-	private function getSelectedBelongsToManyColumns($form, $id) {
+    private function getSelectedBelongsToManyColumns($form, $id)
+    {
         $selectedBelongsToMany = null;
 
         if (@$form['belongsToMany']) {
@@ -150,7 +151,7 @@ class MainController extends Controller {
         }
 
         return $selectedBelongsToMany;
-	}
+    }
 
     public function edit($tableName, $id)
     {
@@ -164,7 +165,7 @@ class MainController extends Controller {
             'hasMany' => $this->getHasManyColumns($form),
             'selectedHasMany' => $this->getSelectedHasManyColumns($form, $id),
             'belongsToMany' => $this->getBelongsToManyColumns($form),
-			'selectedBelongsToMany' => $this->getSelectedBelongsToManyColumns($form, $id)
+            'selectedBelongsToMany' => $this->getSelectedBelongsToManyColumns($form, $id)
         ]);
     }
 
@@ -196,7 +197,7 @@ class MainController extends Controller {
             unset($data['hasMany']);
         }
 
-		$belongsToMany = null;
+        $belongsToMany = null;
 
         if (@$data['belongsToMany']) {
             $belongsToMany = $data['belongsToMany'];
@@ -224,9 +225,9 @@ class MainController extends Controller {
 
                 $ids = $belongsToMany[$table];
                 if ($ids) {
-            		foreach ($ids as $pivotId) {
-						\DB::table($options['table'])->insert([$options['column'] => $id, $options['foreignLabel'] => $pivotId]);
-					}
+                    foreach ($ids as $pivotId) {
+                        \DB::table($options['table'])->insert([$options['column'] => $id, $options['foreignLabel'] => $pivotId]);
+                    }
                 }
             }
         }
@@ -252,7 +253,7 @@ class MainController extends Controller {
             unset($data['hasMany']);
         }
 
-		$belongsToMany = null;
+        $belongsToMany = null;
 
         if (@$data['belongsToMany']) {
             $belongsToMany = $data['belongsToMany'];
@@ -269,12 +270,12 @@ class MainController extends Controller {
         }
 
         if ($belongsToMany) {
-			$form = $this->getForm($tableName);
+            $form = $this->getForm($tableName);
             foreach ($belongsToMany as $table => $ids) {
-				foreach ($ids as $pivotId) {
-					\DB::table($form['belongsToMany'][$table]['table'])->insert([$form['belongsToMany'][$table]['column'] => $id, $form['belongsToMany'][$table]['foreignLabel'] => $pivotId]);
-				}
-			}
+                foreach ($ids as $pivotId) {
+                    \DB::table($form['belongsToMany'][$table]['table'])->insert([$form['belongsToMany'][$table]['column'] => $id, $form['belongsToMany'][$table]['foreignLabel'] => $pivotId]);
+                }
+            }
         }
 
         return redirect(packageConfig('prefix') . '/' . $tableName);
