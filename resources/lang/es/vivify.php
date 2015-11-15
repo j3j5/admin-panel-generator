@@ -14,4 +14,5 @@ return [
 	'insert'		=> 'Crear',
 	'cancel'		=> 'Cancelar',
 	'update'		=> 'Actualizar',
+	'toggle'		=> 'Mostrar/Ocultar Navegación',
 ];

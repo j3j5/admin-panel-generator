@@ -14,4 +14,5 @@ return [
 	'insert'		=> 'Insert',
 	'cancel'		=> 'Cancel',
 	'update'		=> 'Update',
+	'toggle'		=> 'Toggle Navigation',
 ];
