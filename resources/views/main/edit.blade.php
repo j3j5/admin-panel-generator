@@ -40,8 +40,8 @@
             </div>
           @endif
         @endforeach
-        <button class="btn btn-success" type="submit">Update</button>
-        <a class="btn btn-default" href="/{{ packageConfig('prefix') }}/{{ $tableName }}">Cancel</a>
+        <button class="btn btn-success" type="submit">{{ packageTranslation('vivify.update') }}</button>
+        <a class="btn btn-default" href="/{{ packageConfig('prefix') }}/{{ $tableName }}">{{ packageTranslation('vivify.cancel') }}</a>
       </form>
 
     </div>

@@ -20,6 +20,12 @@ class AdminPanelGeneratorProvider extends ServiceProvider {
 			__DIR__ . '/../../config/' . self::PACKAGE_NAME . '.php' => config_path(self::PACKAGE_NAME . '.php'),
 		]);
 
+		$this->loadTranslationsFrom(realpath(__DIR__.'/../../resources/lang/'), self::PACKAGE_NAME);
+
+		$this->publishes([
+			realpath(__DIR__.'/../../resources/lang/') => base_path('resources/lang/vendor/' . self::PACKAGE_NAME),
+		]);
+
 		include __DIR__.'/../helpers.php';
 		include __DIR__.'/../routes.php';
 	}
