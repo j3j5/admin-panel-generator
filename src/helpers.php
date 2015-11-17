@@ -11,3 +11,8 @@ function packageView($name, $data = array())
 {
     return view(AdminPanelGeneratorProvider::PACKAGE_NAME . '::' . $name, $data);
 }
+
+function packageTranslation($key)
+{
+	return trans(AdminPanelGeneratorProvider::PACKAGE_NAME . '::' . $key);
+}
