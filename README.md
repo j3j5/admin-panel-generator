@@ -168,6 +168,15 @@ Example:
                 'column' => 'article_id',
                 'foreignLabel' => 'title'
             ]
+        ],
+        'belongsToMany' => [
+            'tags' => [
+                'label' => 'Tags',
+                'table' => 'article_tag',
+                'column' => 'article_id',
+                'foreignLabel' => 'tag_id',
+                'index' => 'id'
+            ]
         ]
     ]
 ]
@@ -175,10 +184,11 @@ Example:
 
 - `belongsTo` param will generate "select box"
 - `hasMany` will generate "multi select box". In above example we have `videos` table with column `article_id` (that represent foreign key).
+- `belongsToMany` will also generate a "multi select box". In the above example we have a `tags` table linked to `articles` through a pivot table (`article_tag`). `index` is the primary key that allows us to fetch records in the `tags` table.
 
 ### validationRules
 
-Here you can setup validation rules ([Laravel validation rules](http://laravel.com/docs/5.0/validation#available-validation-rules)) for each table. It will be called when admin user want to create or edit some entity. Example:
+Here you need to setup validation rules ([Laravel validation rules](http://laravel.com/docs/5.0/validation#available-validation-rules)) for each table. It will be called when admin user want to create or edit some entity. Example:
 
 ```php
 'validationRules' => [

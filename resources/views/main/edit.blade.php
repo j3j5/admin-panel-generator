@@ -23,6 +23,13 @@
                 {!! Form::select($belongsToOptions['column'], $belongsTo[$belongsToName], $entity->$belongsToOptions['column'], ['class' => 'form-control']) !!}
               </div>
             @endforeach
+          @elseif ($name == 'belongsToMany')
+            @foreach($options as $belongsToManyName => $belongsToManyOptions)
+              <div class="form-group {{ $errors->has($belongsToManyName)? 'has-error' : '' }}">
+                {!! Form::label($belongsToManyName, $belongsToManyOptions['label'], [ 'class' => 'control-label' ]) !!}
+                {!! Form::select("belongsToMany[{$belongsToManyName}][]", $belongsToMany[$belongsToManyName], $selectedBelongsToMany[$belongsToManyName], ['multiple' => 'multiple', 'class' => 'form-control']) !!}
+              </div>
+            @endforeach
           @else
             <div class="form-group {{ $errors->has($name)? 'has-error' : '' }}">
               {!! Form::label($name, $options['label']) !!}
