@@ -37,11 +37,12 @@ class AdminPanelGeneratorProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app->register('Illuminate\Html\HtmlServiceProvider');
+		$this->app->register('Collective\Html\HtmlServiceProvider');
 
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-		$loader->alias('HTML', 'Illuminate\Html\HtmlFacade');
-		$loader->alias('Form', 'Illuminate\Html\FormFacade');
+
+		$loader->alias('HTML', 'Collective\Html\HtmlFacade');
+		$loader->alias('Form', 'Collective\Html\FormFacade');
 	}
 
 }
