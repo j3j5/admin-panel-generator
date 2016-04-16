@@ -1,6 +1,7 @@
 <?php namespace VivifyIdeas\AdminPanelGenerator\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MainController extends Controller {
 
@@ -32,7 +33,6 @@ class MainController extends Controller {
     private function applyFilter(array $filters, $tableName)
     {
         $q = \DB::table($tableName);
-
         if (empty($filters)) {
             return $q;
         }
@@ -45,7 +45,6 @@ class MainController extends Controller {
                 if (!$filter) {
                     $filter = '=';
                 }
-
                 $q->where($name, $filter, $this->prepareFilterValue($filter, $value));
             }
         }
@@ -55,7 +54,12 @@ class MainController extends Controller {
 
     public function delete($tableName, $id)
     {
-        \DB::table($tableName)->where('id', $id)->delete();
+        $model = "App\Models\\" . Str::studly(Str::singular($tableName));
+        if (class_exists($model)) {
+            $model::where('id', $id)->first()->delete();
+        } else {
+            \DB::table($tableName)->where('id', $id)->delete();
+        }
 
         return redirect()->back();
     }
@@ -204,29 +208,54 @@ class MainController extends Controller {
             unset($data['belongsToMany']);
         }
 
-        \DB::table($tableName)->where('id', $id)->update($data);
+        $model = "App\Models\\" . Str::studly(Str::singular($tableName));
+        if (class_exists($model)) {
+            $model::where('id', $id)->first()->update($data);
+        } else {
+            \DB::table($tableName)->where('id', $id)->update($data);
+        }
 
         $form = $this->getForm($tableName);
 
         if (isset($form['hasMany'])) {
             foreach ($form['hasMany'] as $table => $options) {
-                \DB::table($table)->where($options['column'], $id)->update([$options['column'] => null ]);
+                $model = "App\Models\\" . Str::studly(Str::singular($table));
+                if (class_exists($model)) {
+                    $model::where($options['column'], $id)->first()->update([$options['column'] => null ]);
+                } else {
+                    \DB::table($table)->where($options['column'], $id)->update([$options['column'] => null ]);
+                }
 
                 $ids = $hasMany[$table];
                 if ($ids) {
-                    \DB::table($table)->whereIn('id', $ids)->update([ $options['column'] => $id ]);
+                    if (class_exists($model)) {
+                        $model::whereIn('id', $ids)->get()->each(function($item, $key) use($options, $id) {
+                            $item::update([ $options['column'] => $id ]);
+                        });
+                    } else {
+                        \DB::table($table)->whereIn('id', $ids)->update([ $options['column'] => $id ]);
+                    }
                 }
             }
         }
 
         if (isset($form['belongsToMany'])) {
             foreach ($form['belongsToMany'] as $table => $options) {
-                \DB::table($options['table'])->where($options['column'], $id)->delete();
+                $model = "App\Models\\" . Str::studly(Str::singular($options['table']));
+                if (class_exists($model)) {
+                    $model::where($options['column'], $id)->first()->delete();
+                } else {
+                    \DB::table($options['table'])->where($options['column'], $id)->delete();
+                }
 
                 $ids = $belongsToMany[$table];
                 if ($ids) {
                     foreach ($ids as $pivotId) {
-                        \DB::table($options['table'])->insert([$options['column'] => $id, $options['foreignLabel'] => $pivotId]);
+                        if (class_exists($model)) {
+                            $model::create([$options['column'] => $id, $options['foreignLabel'] => $pivotId]);
+                        } else {
+                            \DB::table($options['table'])->insert([$options['column'] => $id, $options['foreignLabel'] => $pivotId]);
+                        }
                     }
                 }
             }
@@ -260,12 +289,25 @@ class MainController extends Controller {
             unset($data['belongsToMany']);
         }
 
-        $id = \DB::table($tableName)->insertGetId($data);
+        $model = "App\Models\\" . Str::studly(Str::singular($tableName));
+        if (class_exists($model)) {
+            $new = $model::create($data);
+            $id = $new->id;
+        } else {
+            $id = \DB::table($tableName)->insertGetId($data);
+        }
 
         if ($hasMany) {
             $form = $this->getForm($tableName);
             foreach ($hasMany as $table => $ids) {
-                \DB::table($table)->whereIn('id', $ids)->update([ $form['hasMany'][$table]['column'] => $id ]);
+                $model = "App\Models\\" . Str::studly(Str::singular($table));
+                if (class_exists($model)) {
+                    $model::whereIn('id', $ids)->get()->each(function($item, $key) use($options, $id) {
+                        $item::update([ $form['hasMany'][$table]['column'] => $id ]);
+                    });
+                } else {
+                    \DB::table($table)->whereIn('id', $ids)->update([ $form['hasMany'][$table]['column'] => $id ]);
+                }
             }
         }
 
@@ -273,7 +315,12 @@ class MainController extends Controller {
             $form = $this->getForm($tableName);
             foreach ($belongsToMany as $table => $ids) {
                 foreach ($ids as $pivotId) {
-                    \DB::table($form['belongsToMany'][$table]['table'])->insert([$form['belongsToMany'][$table]['column'] => $id, $form['belongsToMany'][$table]['foreignLabel'] => $pivotId]);
+                    $model = "App\Models\\" . Str::studly(Str::singular($form['belongsToMany'][$table]['table']));
+                    if (class_exists($model)) {
+                        $model::create([$form['belongsToMany'][$table]['column'] => $id, $form['belongsToMany'][$table]['foreignLabel'] => $pivotId]);
+                    } else {
+                        \DB::table($form['belongsToMany'][$table]['table'])->insert([$form['belongsToMany'][$table]['column'] => $id, $form['belongsToMany'][$table]['foreignLabel'] => $pivotId]);
+                    }
                 }
             }
         }
