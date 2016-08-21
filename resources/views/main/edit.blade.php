@@ -35,11 +35,11 @@
               {!! Form::label($name, $options['label']) !!}
               @if($options['type'] == 'checkbox')
                 {!! Form::hidden($name, 0) !!}
-                {!! Form::$options['type']($name, 1, $entity->$name) !!}
+                {!! Form::{$options['type']}($name, 1, $entity->$name) !!}
               @elseif ($options['type'] == 'number')
                 {!! Form::input($options['type'], $name, $entity->$name, ['class'=>'form-control']) !!}
               @else
-                {!! Form::$options['type']($name, $entity->$name, ['class'=>'form-control']) !!}
+                {!! Form::{$options['type']}($name, $entity->$name, ['class'=>'form-control']) !!}
               @endif
               @if ($errors->has($name))
                 <p class="help-block">{{ $errors->first($name) }}</p>

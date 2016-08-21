@@ -35,11 +35,11 @@
             <div class="form-group {{ $errors->has($name)? 'has-error' : '' }}">
               {!! Form::label($name, $options['label'], [ 'class' => 'control-label' ]) !!}
               @if($options['type'] == 'checkbox')
-                {!! Form::$options['type']($name, 1) !!}
+                {!! Form::{$options['type']}($name, 1) !!}
               @elseif ($options['type'] == 'number')
                 {!! Form::input($options['type'], $name, null, ['class'=>'form-control']) !!}
               @else
-                {!! Form::$options['type']($name, null, ['class'=>'form-control']) !!}
+                {!! Form::{$options['type']}($name, null, ['class'=>'form-control']) !!}
               @endif
               @if ($errors->has($name))
                 <p class="help-block">{{ $errors->first($name) }}</p>

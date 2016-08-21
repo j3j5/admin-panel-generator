@@ -16,7 +16,7 @@
               @foreach($filters as $name => $options)
                 <div class="form-group">
                   {!! Form::label($name, $options['label'], [ 'class' => 'control-label' ]) !!}
-                  {!! Form::$options['type']($name, @$filterValue[$name], ['class'=>'form-control']) !!}
+                  {!! Form::{$options['type']}($name, @$filterValue[$name], ['class'=>'form-control']) !!}
                 </div>
               @endforeach
               <button class="btn btn-default" type="submit">{{ packageTranslation('vivify.filter-verb') }}</button>
